@@ -1,5 +1,4 @@
 var koa = require('koa');
-var grabService = require('./services/grabService');
 var config = require('./config');
 var mongoose = require('mongoose');
 
@@ -11,14 +10,16 @@ connect();
 
 mongoose.connection.on('open',function(){
 	console.log('连接成功');
+	//注册抓取服务
+	require('./services/grabService')();
 });
 mongoose.connection.on('error', console.log);
 mongoose.connection.on('disconnected', connect);
 
+require('./models/One');
 
 
-//注册抓取服务
-//grabService();
+
 
 //web service
 /* var app = koa();

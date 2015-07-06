@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var OneSchema = new Schema({
-	vol: Nmuber,
+	vol: Number,
 	tilte: String,
 	author: String,
 	abstract: String,
