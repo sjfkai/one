@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 
 // Connect to mongodb
 var connect = function () { 
-  mongoose.connect(config.db.uri);
+  mongoose.connect(config.db.uri_mongolab);
 };
 connect();
 
@@ -22,5 +22,5 @@ require('./models/One');
 
 
 //web service
-/* var app = koa();
-app.listen(3334); */
+var app = koa();
+app.listen(3334);
