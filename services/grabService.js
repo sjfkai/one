@@ -8,7 +8,7 @@ var OneModel = mongoose.model('One');
 
 module.exports = function() {
 	grab(); //启动时抓取一次
-	CronJob('30 * * * * *', grab, null, true, 'Asia/Shanghai');
+	new CronJob('0 0 1 * * *', grab, null, true, 'Asia/Shanghai');
 };
 
 
