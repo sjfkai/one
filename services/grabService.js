@@ -5,6 +5,7 @@ var CronJob = require('cron').CronJob;
 var moment = require('moment');
 var mongoose = require('mongoose');
 var OneModel = mongoose.model('One');
+var logger = require('winston');
 
 module.exports = function() {
 	grab(); //启动时抓取一次
@@ -16,8 +17,8 @@ var grab = function() {
 	co(function*() {
 		var localVol = yield getLocalVol();
 		var vol = getTodayVol();
-		console.log("local's vol = " + localVol);
-		console.log("today's vol = " + vol);
+		logger.info("local's vol = " + localVol);
+		logger.info("today's vol = " + vol);
 		var one = {};
 		var path , result, $;
 		for (var i = localVol + 1; i <= vol; i++) {
@@ -41,12 +42,12 @@ var grab = function() {
 			one.imgUrl = $('div.one-imagen img').attr('src');
 			one.imgDetail = $('div.one-imagen-leyenda').text().trim();
 			yield new OneModel(one).save();
-			console.log("save vol." + one.vol + " success");
+			logger.info("save vol." + one.vol + " success");
 		}
 	}).then(function() {
-		console.log("grab done");
+		logger.info("grab done");
 	}).catch(function(err) {
-		console.log(err.stack);
+		logger.error(err.stack);
 	});
 }
 
@@ -67,6 +68,6 @@ var getLocalVol = function*() {
 	}).sort({
 		vol: -1
 	}).limit(1);
-	console.log(res);
+	logger.info(res[0].vol);
 	return res.length > 0 ? res[0].vol : 0;
 };
