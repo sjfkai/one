@@ -68,6 +68,5 @@ var getLocalVol = function*() {
 	}).sort({
 		vol: -1
 	}).limit(1);
-	logger.info(res[0].vol);
 	return res.length > 0 ? res[0].vol : 0;
 };
