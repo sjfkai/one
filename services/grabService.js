@@ -63,10 +63,17 @@ var getTodayVol = function() {
 };
 
 var getLocalVol = function*() {
-	var res = yield OneModel.find({}, {
-		vol: 1
-	}).sort({
-		vol: -1
-	}).limit(1);
-	return res.length > 0 ? res[0].vol : 0;
+	try{
+		var res = yield OneModel.find({}, {
+			vol: 1
+		}).sort({
+			vol: -1
+		}).limit(1);
+		return res.length > 0 ? res[0].vol : 0;
+	}catch(e){
+		logger.error('getLocalVol error res :'+res);
+		logger.error(e);
+		return yield getLocalVol();
+	}
+	
 };
