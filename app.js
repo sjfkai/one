@@ -24,13 +24,29 @@ mongoose.connection.on('open',function(){
 	require('./services/grabService')();
 });
 mongoose.connection.on('error', logger.info);
-mongoose.connection.on('disconnected', connect);
-
+mongoose.connection.on('disconnected', function(info){
+	logger.warn('mongodb disconned ' + info )
+});
+//load models
 require('./models/One');
-
 
 
 
 //web service
 var app = koa();
+
+var koaLogger = require('koa-logger');
+var koaBody = require('koa-body');
+var router  = require('koa-router')();
+var static = require('koa-static');
+
+app.use(koaLogger());
+app.use(static('./public'));
+app.use(koaBody());
+//routes
+require('./routes')(router);
+app.use(router.routes());
+app.use(router.allowedMethods());
+
+
 app.listen(3334);
